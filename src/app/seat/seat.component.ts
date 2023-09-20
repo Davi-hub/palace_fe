@@ -4,20 +4,13 @@ import { Card, Ids } from '../types';
 import { ApiService } from '../services/api.service';
 import { GameService } from '../services/game.service';
 import { Observable, defer, firstValueFrom } from 'rxjs';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-seat',
   templateUrl: './seat.component.html',
   styleUrls: ['./seat.component.css'],
-  animations: [
-    trigger('moveToTarget', [
-      state('start', style({ transform: 'translateX(0)' })),
-      state('end', style({ transform: 'translateX(100px)' })),
-      transition('start => end', animate('1000ms ease-in')),
-    ]),
-  ],
 })
+
 export class SeatComponent {
   @Input() player!: Player;
   @Input() isMainSeat = false;
@@ -176,53 +169,52 @@ export class SeatComponent {
     let playersCardArray;
     let selectedCard: Card;
     let apiObservable: Observable<any>;
-    this.moveSvgElement();
 
-    // if (this.selectedInHand && (this.selectedInHandIndex >= 0)) {
-    //   selectedCardEl = this.selectedInHand;
-    //   selectedCard = this.player.cardsInHand[this.selectedInHandIndex];
-    //   playersCardArray = this.player.cardsInHand;
-    //   apiObservable = defer(() => this.apiService.playedACard(selectedCard));
-    // } else if (this.selectedOnCard && (this.selectedOnCardIndex >= 0)) {
-    //   selectedCardEl = this.selectedOnCard;
-    //   selectedCard = this.player.cardsOnCards[this.selectedOnCardIndex];
-    //   playersCardArray = this.player.cardsOnCards;
-    //   apiObservable = defer(() => this.apiService.playedACardOnCard(selectedCard));
-    // } else if (this.selectedOnTable && (this.selectedOnTableIndex >= 0)) {
+    if (this.selectedInHand && (this.selectedInHandIndex >= 0)) {
+      selectedCardEl = this.selectedInHand;
+      selectedCard = this.player.cardsInHand[this.selectedInHandIndex];
+      playersCardArray = this.player.cardsInHand;
+      apiObservable = defer(() => this.apiService.playedACard(selectedCard));
+    } else if (this.selectedOnCard && (this.selectedOnCardIndex >= 0)) {
+      selectedCardEl = this.selectedOnCard;
+      selectedCard = this.player.cardsOnCards[this.selectedOnCardIndex];
+      playersCardArray = this.player.cardsOnCards;
+      apiObservable = defer(() => this.apiService.playedACardOnCard(selectedCard));
+    } else if (this.selectedOnTable && (this.selectedOnTableIndex >= 0)) {
 
-    //   selectedCardEl = this.selectedOnTable;
-    //   selectedCard = await firstValueFrom(this.apiService.getCardOnTable(this.selectedOnTableIndex)) as Card;
-    //   this.player.cardsOnTable.splice(this.selectedOnTableIndex, 1, selectedCard);
-    //   playersCardArray = this.player.cardsOnTable;
-    //   apiObservable = defer(() => this.apiService.playedACardOnTable(selectedCard));
-    // } else {
-    //   return;
-    // }
+      selectedCardEl = this.selectedOnTable;
+      selectedCard = await firstValueFrom(this.apiService.getCardOnTable(this.selectedOnTableIndex)) as Card;
+      this.player.cardsOnTable.splice(this.selectedOnTableIndex, 1, selectedCard);
+      playersCardArray = this.player.cardsOnTable;
+      apiObservable = defer(() => this.apiService.playedACardOnTable(selectedCard));
+    } else {
+      return;
+    }
 
-    // this.gameService.playACard(selectedCard, apiObservable).then(result => {
-    //   if (result && selectedCardEl && (this.selectedOnTableIndex < 0)) {
+    this.gameService.playACard(selectedCard, apiObservable).then(result => {
+      if (result && selectedCardEl && (this.selectedOnTableIndex < 0)) {
 
-    //     this.prepareCard(selectedCardEl);
-    //   } else if (result && selectedCardEl && (this.selectedOnTableIndex > 0)) {
-    //     this.apiService.playedACardOnTable(selectedCard).subscribe(() => {
-    //       this.gameService.isMyTurn();
-    //     });
-    //   } else {
-    //     this.apiService.drawThePile().subscribe(() => {
-    //       this.apiService.playedACardOnTable(selectedCard).subscribe(() => {
-    //         this.apiService.drawThePile().subscribe(() => this.gameService.isMyTurn());
-    //       });
-    //     });
-    //   }
+        this.prepareCard(selectedCardEl);
+      } else if (result && selectedCardEl && (this.selectedOnTableIndex > 0)) {
+        this.apiService.playedACardOnTable(selectedCard).subscribe(() => {
+          this.gameService.isMyTurn();
+        });
+      } else {
+        this.apiService.drawThePile().subscribe(() => {
+          this.apiService.playedACardOnTable(selectedCard).subscribe(() => {
+            this.apiService.drawThePile().subscribe(() => this.gameService.isMyTurn());
+          });
+        });
+      }
 
-    //   this.selectedInHand = null;
-    //   this.selectedInHandIndex = -1;
-    //   this.selectedOnCard = null;
-    //   this.selectedOnCardIndex = -1;
-    //   this.selectedOnTable = null;
-    //   this.selectedOnTableIndex = -1;
-    //   this.gameService.isMyTurn();
-    // });
+      this.selectedInHand = null;
+      this.selectedInHandIndex = -1;
+      this.selectedOnCard = null;
+      this.selectedOnCardIndex = -1;
+      this.selectedOnTable = null;
+      this.selectedOnTableIndex = -1;
+      this.gameService.isMyTurn();
+    });
   }
 
   everybodyIsReady() {
@@ -230,13 +222,5 @@ export class SeatComponent {
       this.gameStatus = 1;
       this.gameService.isMyTurn();
     });
-  }
-
-  moveSvgElement() {
-    this.animationState = 'end';
-    // Az animáció beállítása után várjunk egy kis időt, majd állítsuk vissza az animáció állapotát
-    setTimeout(() => {
-      this.animationState = 'start';
-    }, 1000); // Az időt itt állíthatod be az animáció hosszához igazítva
   }
 }

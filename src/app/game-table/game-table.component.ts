@@ -5,7 +5,6 @@ import { Card} from '../types';
 import { Subscription } from 'rxjs';
 import { GameService } from '../services/game.service';
 import { GameData } from '../interfaces/game-data';
-import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-game-table',
@@ -57,7 +56,6 @@ export class GameTableComponent implements OnInit, AfterViewInit {
         const domRect = lastCardOfPile.getClientRects()[0];
         this.pilePosition.x=domRect.x;
         this.pilePosition.y=domRect.y;
-        this.moveSvgElement();
       }
     })
   }
@@ -127,9 +125,5 @@ export class GameTableComponent implements OnInit, AfterViewInit {
     this.apiService.drawThePile().subscribe((res: any) => {
       this.gameService.isMyTurn();
     })
-  }
-
-  moveSvgElement() {
-    this.animationState = 'end';
   }
 }
