@@ -1,0 +1,20 @@
+<h1 class="display-6">Players</h1>
+<ul class="list-group">
+  <li
+    *ngFor="let player of players, let i = index"
+    class="list-group-item d-flex align-items-center justify-content-between"
+    [ngClass]="{'list-group-item-success': player.playerName}">
+    <span>
+      {{player.playerId ? player.playerName : 'Player ' + (i+1)}}
+    </span>
+  </li>
+</ul>
+<h1 class="display-6">Game ID</h1>
+<div class="text-center mb-3">Share this ID with your friend(s):</div>
+<div class="input-group">
+  <input type="text" class="form-control" readonly [value]="ids.gameId" #id>
+    <button type="button" class="btn btn-primary btn-group" (click)="onCopy(id)">
+      Copy
+    </button>
+</div>
+

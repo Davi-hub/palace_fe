@@ -1,0 +1,39 @@
+<nav class="navbar navbar-light bg-light">
+  <span class="logo navbar-brand">
+    <img src="../../assets/logo.svg" width="40" height="40" class="align-center" alt="">
+    Palace
+  </span>
+</nav>
+<div class="cont">
+  <form class="border" [formGroup]="newGameFormGroup" (ngSubmit)="onSubmit()">
+    <h2>New Game</h2>
+    <div class="mb-3">
+      <button *ngIf="isCreate" type="button" class="btn btn-secondary" (click)="onJoin()" >Join Game</button>
+      <button *ngIf="!isCreate" type="button" class="btn btn-secondary" (click)="onCreate()" >Create Game</button>
+    </div>
+    <h4>{{isCreate ? 'Create Game' : 'Join Game'}}</h4>
+    <div class="mb-3">
+      <label for="playerName" class="form-label">Your Nickname</label>
+      <input type="text" class="form-control" id="playerName" formControlName="playerName">
+    </div>
+    <div *ngIf="isCreate" class="mb-3">
+      <label for="numberOfPlayers" class="form-label">Number of Players</label>
+      <select class="form-select" id="numberOfPlayers" aria-label="Default select example"  formControlName="playerNumber">
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+        <option value="4">Four</option>
+        <option value="5">Five</option>
+        <option value="6">Six</option>
+        <option value="7">Seven</option>
+        <option value="8">Eight</option>
+        <option value="9">Nine</option>
+        <option value="10">Ten</option>
+      </select>
+    </div>
+    <div *ngIf="!isCreate" class="mb-3">
+    <label for="code" class="form-label">Game ID</label>
+    <input type="text" class="form-control" id="code" formControlName="gameId">
+  </div>
+  <button type="submit" class="btn btn-primary">Start</button>
+</form>
+</div>

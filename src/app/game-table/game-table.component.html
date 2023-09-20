@@ -1,0 +1,54 @@
+<div class="_table">
+  <div class="grid-item item-1">
+    <div class="horizontal-seats">
+      <div *ngFor="let player of hSeatsTwo" class="seats">
+        <app-seat [player]="player" [gameStatus]="gameStatus"></app-seat>
+      </div>
+    </div>
+  </div>
+  <div class="grid-item item-5">
+    <div class="vertical-seats left">
+      <div *ngFor="let player of vSeatsOne" class="seats">
+        <app-seat [player]="player" [gameStatus]="gameStatus"></app-seat>
+      </div>
+    </div>
+  </div>
+  <div class="grid-item item-6">
+    <div class="center">
+      <svg id="deck-and-pile">
+        <g *ngFor="let card of deck , let i = index"
+          [translateSvg]="(i*0.003) + ',' + ((0.15)-(i*0.003)) + ', 10'">
+          <g app-card [cardData]="card"></g>
+        </g>
+        <g *ngIf="pile.length==0"
+          [translateSvg]="'1.5, 0.15, 10'"
+          #pile></g>
+        <g *ngFor="let card of pile, let j = index"
+          #pile
+          [translateSvg]="(j*0.003)+1.5 + ',' + ((0.15)-(j*0.003)) + ', 10'">
+          <g app-card [cardData]="card" (click)="onPile()"></g>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="grid-item item-7">
+    <div class="vertical-seats right">
+      <div *ngFor="let player of vSeatsTwo" class="seats">
+        <app-seat [player]="player" [gameStatus]="gameStatus"></app-seat>
+      </div>
+    </div>
+  </div>
+  <div class="grid-item item-9">
+    <div class="horizontal-seats">
+      <div *ngIf="hSeatsOne.length >2" class="seats">
+        <app-seat [player]="hSeatsOne[2]" [gameStatus]="gameStatus"></app-seat>
+      </div>
+      <div *ngIf="hSeatsOne.length >1" class="seats">
+        <app-seat [player]="hSeatsOne[1]" [gameStatus]="gameStatus"></app-seat>
+      </div>
+      <div *ngIf="hSeatsOne.length >0" class="main-seat">
+        <app-seat [player]="hSeatsOne[0]" [gameStatus]="gameStatus" [isMainSeat]="true" ></app-seat>
+      </div>
+    </div>
+  </div>
+</div>

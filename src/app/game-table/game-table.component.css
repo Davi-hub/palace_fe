@@ -1,0 +1,82 @@
+._table {
+  display: grid;
+  width: 100%;
+  height: 100vh;
+  background-color: darkgreen;
+  grid-template-columns: repeat(5, auto);
+}
+
+.grid-item {
+  width: auto;
+  height: auto;
+}
+
+.item-1 {
+  grid-column: 1 / 6;
+  grid-row: 1 / 2;
+}
+
+.item-5 {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.item-6 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  grid-column: 2 / 5;
+  grid-row: 2 / 3;
+}
+
+.item-7 {
+  grid-column: 5 / 6;
+  grid-row: 2 / 3;
+}
+
+.item-9 {
+  grid-column: 1 / 6;
+  grid-row: 3 / 4;
+}
+
+/* .seats {
+  width: 22vw;
+  height: 32vh;
+} */
+
+/* .main-seat {
+  width: 44vw;
+  height: 32vh;
+} */
+
+.horizontal-seats {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+}
+
+.vertical-seats {
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-content: end;
+  height: 100%;
+}
+
+._card {
+  height: 15vh;
+  width: 10.71vh;
+  margin: 5px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#deck-and-pile {
+  width: 25vh;
+  height: 16vh;
+}
